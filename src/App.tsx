@@ -1,5 +1,10 @@
-import React from 'react';
-import './App.css';
+import React, { useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.scss";
+import { MAIN_PATH } from "./common/constants/path.const";
+
+import SignIn from "./page/sign/SignIn";
+import Main from "./page/main/Main";
 
 function App() {
   // 1. react-router-dom 으로 페이지 연결, path는 common/constants폴더에서 상수로 관리
@@ -8,9 +13,12 @@ function App() {
   // 4. axios로 api 호출, api파일은 다른 repository보고 참조
   // 5. app.scss에 전역 font 정의
   return (
-    <div className="App">
-      
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<SignIn />} />
+        <Route path={MAIN_PATH.MAIN} element={<Main />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

@@ -1,0 +1,87 @@
+.login {
+  padding-left: calc(50% - 335px / 2);
+  &-label-id {
+    font-family: "Spoqa Han Sans Neo";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    color: #3f3f3f;
+  }
+  &-label-password {
+    font-family: "Spoqa Han Sans Neo";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    color: #3f3f3f;
+
+    top: 497px;
+  }
+  &-input-id {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 295px;
+    padding: 14px 20px;
+    gap: 10px;
+    background: #f2f2f2;
+    border: none;
+    border-radius: 5px;
+    top: 422px;
+  }
+  &-input-password {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 295px;
+    padding: 14px 20px;
+    gap: 10px;
+    background: #f2f2f2;
+    border: none;
+    border-radius: 5px;
+    top: 522px;
+  }
+  &-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 14px 134px;
+    gap: 10px;
+    width: 335px;
+    height: 56px;
+    background: #3f3f3f;
+    box-shadow: 0px 5px 13px rgba(0, 0, 0, 0.05);
+    border-radius: 56px;
+    top: 626.5px;
+
+    font-family: "Spoqa Han Sans Neo";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 150%;
+    color: #ffffff;
+  }
+  &-title1 {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    left: 844px;
+    top: 751.05px;
+    color: #000000;
+  }
+  &-title2 {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    left: 844px;
+    bottom: 280.95px;
+
+    color: #000000;
+  }
+}
