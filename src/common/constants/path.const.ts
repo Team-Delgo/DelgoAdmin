@@ -1,6 +1,8 @@
 export const ROOT_PATH = "/";
 export const MAIN_PATH = {
   MAIN: "/main",
+  USER: "/user",
+  POST: "/post",
 };
 // export const SIGN_IN_PATH = {
 //   MAIN: '/user/signin',

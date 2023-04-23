@@ -1,7 +1,20 @@
 .login {
-  padding-left: calc(50% - 335px / 2);
-  &-label-id {
-    font-family: "Spoqa Han Sans Neo";
+  display: flex;
+  height: 100vh;
+  justify-content: center; /*세로방향 가운데 정렬*/
+  align-items: center; /*가로방향 가운데 정렬*/
+  &-title {
+    margin-top: 9px;
+    text-align: center;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 150%;
+  }
+  &-input {
+    margin-top: 26px;
+  }
+  &-label-email {
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
@@ -9,16 +22,14 @@
     color: #3f3f3f;
   }
   &-label-password {
-    font-family: "Spoqa Han Sans Neo";
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
     line-height: 150%;
     color: #3f3f3f;
-
-    top: 497px;
   }
-  &-input-id {
+  &-input-email {
+    margin-top: 4px;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -28,9 +39,12 @@
     background: #f2f2f2;
     border: none;
     border-radius: 5px;
-    top: 422px;
+    &:focus {
+      outline-color: #aa93ec;
+    }
   }
   &-input-password {
+    margin-top: 4px;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -40,21 +54,21 @@
     background: #f2f2f2;
     border: none;
     border-radius: 5px;
-    top: 522px;
+    &:focus {
+      outline-color: #aa93ec;
+    }
   }
   &-button {
-    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 14px 134px;
     gap: 10px;
     width: 335px;
     height: 56px;
     background: #3f3f3f;
     box-shadow: 0px 5px 13px rgba(0, 0, 0, 0.05);
     border-radius: 56px;
-    top: 626.5px;
+    margin-top: 55.5px;
 
     font-family: "Spoqa Han Sans Neo";
     font-style: normal;
@@ -64,24 +78,42 @@
     color: #ffffff;
   }
   &-title1 {
-    font-family: "Roboto";
+    text-align: center;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     line-height: 150%;
     left: 844px;
-    top: 751.05px;
     color: #000000;
+    margin-top: 68.55px;
   }
   &-title2 {
-    font-family: "Roboto";
+    text-align: center;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     line-height: 150%;
     left: 844px;
-    bottom: 280.95px;
-
     color: #000000;
   }
+  &-feedback {
+    color: #aa93ec;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    margin-left: 20px;
+    margin-top: 4px;
+  }
+}
+.logo {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+#footprint {
+  position: absolute;
+  left: 80px;
+  top: -29px;
+  z-index: -1;
 }

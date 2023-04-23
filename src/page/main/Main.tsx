@@ -1,6 +1,12 @@
 import React from "react";
+import Header from "../../components/Header";
 
 function Main() {
-  return <div>123</div>;
+  return (
+    <div>
+      <Header />
+      멍플관리
+    </div>
+  );
 }
 export default Main;

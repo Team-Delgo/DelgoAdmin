@@ -5,6 +5,8 @@ import { MAIN_PATH } from "./common/constants/path.const";
 
 import SignIn from "./page/sign/SignIn";
 import Main from "./page/main/Main";
+import PostPage from "./page/main/PostPage";
+import UserPage from "./page/main/UserPage";
 
 function App() {
   // 1. react-router-dom 으로 페이지 연결, path는 common/constants폴더에서 상수로 관리
@@ -17,6 +19,8 @@ function App() {
       <Routes>
         <Route path="/" element={<SignIn />} />
         <Route path={MAIN_PATH.MAIN} element={<Main />} />
+        <Route path={MAIN_PATH.POST} element={<PostPage />} />
+        <Route path={MAIN_PATH.USER} element={<UserPage />} />
       </Routes>
     </BrowserRouter>
   );
