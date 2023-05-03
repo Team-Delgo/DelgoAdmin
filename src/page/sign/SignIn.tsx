@@ -28,7 +28,6 @@ function SignIn() {
         navigation(MAIN_PATH.MAIN, { replace: true });
       }
       if (code === 304) {
-        console.log("아비다름");
         setFeedback((prev) => {
           return { ...prev, password: "아이디/비밀번호를 확인해주세요." };
         });

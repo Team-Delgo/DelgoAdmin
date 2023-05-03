@@ -1,0 +1,178 @@
+.user {
+  &-checkbox[type="checkbox"] {
+    all: unset;
+    width: 32px;
+    margin-right: 37px;
+    margin-top: 40px;
+    height: 32px;
+    background: #d9d9d9;
+    border-radius: 2px;
+    &:checked {
+    }
+  }
+  &-admin {
+    display: flex;
+    justify-content: center;
+    &-item {
+      display: flex;
+      margin-left: 44px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 150%;
+      text-decoration-line: underline;
+    }
+  }
+  &-input {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 259px;
+    padding: 14px 20px;
+    gap: 10px;
+    margin-right: 490px;
+    background: #f2f2f2;
+    border: none;
+    &:focus {
+      outline-color: #aa93ec;
+    }
+  }
+  &-label {
+    display: flex;
+    color: white;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 150%;
+    margin-top: 20px;
+    margin-left: 68px;
+    justify-content: center;
+    border-color: white;
+    &-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: black;
+      margin: 1px;
+      &.number {
+        width: 87px;
+        height: 62px;
+      }
+      &.id {
+        width: 222px;
+        height: 62px;
+      }
+      &.name {
+        width: 147px;
+        height: 62px;
+      }
+      &.joinDate {
+        width: 163px;
+        height: 62px;
+      }
+      &.profilePhoto {
+        width: 221px;
+        height: 62px;
+      }
+      &.email {
+        width: 357px;
+        height: 62px;
+      }
+      &.phoneNumber {
+        width: 223px;
+        height: 62px;
+      }
+      &.userState {
+        width: 163px;
+        height: 62px;
+      }
+    }
+  }
+  &-info {
+    display: flex;
+    justify-content: center;
+    height: 110px;
+    color: #000000;
+    &-info-wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+    &-item {
+      display: flex;
+      background: #f2f2f2;
+      justify-content: center;
+      align-items: center;
+      margin: 1px;
+      &.number {
+        width: 87px;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 150%;
+        background-color: black;
+        color: white;
+      }
+      &.id {
+        width: 222px;
+      }
+      &.name {
+        width: 147px;
+      }
+      &.joinDate {
+        width: 163px;
+      }
+      &.profilePhoto {
+        width: 221px;
+      }
+      &.email {
+        width: 357px;
+      }
+      &.phoneNumber {
+        width: 223px;
+      }
+      &.userState {
+        width: 163px;
+      }
+    }
+  }
+}
+.userTitle {
+  display: flex;
+  justify-content: center;
+  &-Wrapper {
+    margin-top: 54px;
+    margin-left: -1230px;
+    margin-bottom: 16px;
+    width: 79px;
+    height: 30px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 150%;
+  }
+}
+#profile {
+  width: 102px;
+  height: 102px;
+}
+.pagination {
+  display: flex;
+  height: 90vh;
+  justify-content: center; /*세로방향 가운데 정렬*/
+  align-items: center; /*가로방향 가운데 정렬*/
+
+  & button {
+    all: unset;
+    margin: 0 50px;
+    width: 15px;
+    height: 36px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 150%;
+    color: #8a8a8a;
+    border: none;
+    &.active {
+      color: black;
+    }
+  }
+}

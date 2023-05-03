@@ -1,0 +1,44 @@
+.header {
+  display: flex;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 150%;
+  color: #ffffff;
+
+  &-wrapper {
+    display: flex;
+    width: 100vw;
+    height: 130px;
+    background: #212122;
+    justify-content: space-between;
+  }
+  &-button {
+    display: flex;
+    margin-top: 58px;
+  }
+}
+.mainbutton {
+  z-index: 10;
+  margin-right: 88px;
+}
+.userbutton {
+  z-index: 10;
+  margin-right: 287px;
+  margin-left: 88px;
+}
+.postbutton {
+  z-index: 10;
+}
+#headerlogo {
+  filter: invert(100%);
+  margin-top: 58px;
+  margin-left: 121px;
+}
+#headerfootprint {
+  position: absolute;
+  z-index: 6;
+  filter: invert(87%);
+  margin-top: -10px;
+  margin-left: -10px;
+}
