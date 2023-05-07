@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { MAIN_PATH } from "../common/constants/path.const";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Header.scss";
 import headerlogo from "../common/icons/titleLogo.svg";

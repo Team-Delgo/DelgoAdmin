@@ -136,18 +136,18 @@
   }
 }
 .userTitle {
-  display: flex;
-  justify-content: center;
+  margin-top: 54px;
+  margin-left: -1230px;
+  margin-bottom: 16px;
+  width: 79px;
+  height: 30px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 150%;
   &-Wrapper {
-    margin-top: 54px;
-    margin-left: -1230px;
-    margin-bottom: 16px;
-    width: 79px;
-    height: 30px;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 150%;
+    display: flex;
+    justify-content: center;
   }
 }
 #profile {
@@ -162,7 +162,8 @@
 
   & button {
     all: unset;
-    margin: 0 50px;
+    padding: 0 25px;
+    margin: 0 25px;
     width: 15px;
     height: 36px;
     font-style: normal;

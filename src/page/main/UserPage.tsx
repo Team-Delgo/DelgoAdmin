@@ -25,42 +25,36 @@ function UserPage() {
     fetchData();
   }, [currentPage]);
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const enterKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
       console.log(search);
     }
   };
-  const handleChange = (event: any) => {
+  const inputChange = (event: any) => {
     setSearch(event.target.value);
   };
-
+  const totalButtonHandler = (event: any) => [];
   return (
     <div className="user">
       <Header />
-      <div className="userTitle">
-        <div className="userTitle-Wrapper">유저관리</div>
+      <div className="userTitle-Wrapper">
+        <div className="userTitle">유저관리</div>
       </div>
       <div className="user-admin">
         <input
           className="user-input"
           value={search}
           placeholder="이메일 검색"
-          onKeyDown={handleKeyDown}
-          onChange={handleChange}
+          onKeyDown={enterKeyDown}
+          onChange={inputChange}
         />
-        <div className="user-admin-item fix" id="fix">
+        <div className="user-admin-item fix" onClick={totalButtonHandler}>
           정보수정
         </div>
-        <div className="user-admin-item delete" id="delete">
-          선택유저삭제
-        </div>
-        <div className="user-admin-item stop" id="stop">
-          계정 정지
-        </div>
-        <div className="user-admin-item save" id="save">
-          변경 저장
-        </div>
+        <div className="user-admin-item delete">선택유저삭제</div>
+        <div className="user-admin-item stop">계정 정지</div>
+        <div className="user-admin-item save">변경 저장</div>
       </div>
       <div className="user-label">
         <label className="user-label-item number">No.</label>
@@ -107,3 +101,12 @@ function UserPage() {
   );
 }
 export default UserPage;
+
+{
+  /* <Modal
+alert={`
+삭제 시 되돌릴 수 없습니다.
+정말로 삭제하시겠습니까?
+`}
+/> */
+}

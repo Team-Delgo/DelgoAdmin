@@ -1,1 +1,118 @@
+.post {
+  &Admin {
+    display: flex;
+    width: 100vw;
+    height: 105px;
+    justify-content: center;
+    border-bottom-style: inset;
+    border-bottom-width: 5px;
+    margin-bottom: 56px;
+    &-Title {
+      width: 97px;
+      height: 30px;
+      margin-top: 37px;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 150%;
+    }
+    &-input {
+      display: flex;
+      box-sizing: border-box;
+      margin-right: 875.23px;
+      align-items: flex-start;
+      width: 259px;
+      height: 49px;
+      padding: 14px 20px;
+      gap: 10px;
+      margin-top: 28px;
+      margin-left: 25px;
+      background: #f2f2f2;
+      border: none;
+      border-radius: 5px;
+      display: flex;
 
+      &:focus {
+        outline-color: #aa93ec;
+      }
+    }
+    &-button {
+      display: flex;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 150%;
+      height: 30px;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin: 40px;
+      &.delete {
+        background-color: black;
+        height: 38px;
+        border-radius: 9px;
+        width: 124px;
+        color: white;
+      }
+      &.showA {
+        width: 97px;
+      }
+      &.showR {
+        width: 115px;
+      }
+    }
+  }
+  &-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    &-wrapper {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 7.5px;
+    }
+    &.checkbox {
+      box-sizing: border-box;
+      width: 21px;
+      height: 21px;
+      background: #f2f2f2;
+      border: 1px solid #000000;
+      border-radius: 2px;
+    }
+    &.userId {
+      display: flex;
+      margin-left: 8px;
+      width: 142px;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 150%;
+    }
+    &.date {
+    }
+    &.photo {
+      width: 259px;
+      height: 259px;
+      background: #f2f2f2;
+      border-radius: 4px;
+    }
+    &.title {
+      margin-top: 12px;
+      width: 229px;
+      height: 24px;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 150%;
+    }
+    &.contents {
+      margin-top: 8px;
+      width: 259px;
+      height: 48px;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 150%;
+    }
+  }
+}
