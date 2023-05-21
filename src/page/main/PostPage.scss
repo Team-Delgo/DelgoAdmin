@@ -64,9 +64,12 @@
   }
   &-info {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+
     &-wrapper {
+      flex-direction: column;
+      justify-content: center;
+    }
+    &-upper {
       display: flex;
       flex-direction: row;
       margin-bottom: 7.5px;

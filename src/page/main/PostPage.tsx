@@ -1,12 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback, ChangeEvent } from "react";
 import Header from "../../components/Header";
 import "./PostPage.scss";
 import moment from "moment";
 import Modal from "../../components/Modal";
 import dog from "../../common/image/dog.jpeg";
+import post from "../../common/api/post";
+
+export interface Post {
+  certificationId: number;
+  placeName: string;
+  description: string;
+  address: string;
+  photoUrl: string;
+  commentCount: number;
+  userId: number;
+  userName: string;
+  userProfile: string;
+  likeCount: number;
+  registDt: string;
+}
+
 function PostPage() {
   const [search, setSearch] = useState("");
-  const [postData, setpostData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [postData, setpostData] = useState<Post[]>([]);
+
+  const fetchData = async () => {
+    const res = await post(currentPage);
+    const { data, code } = res;
+    setpostData(data.content);
+    console.log(data);
+    const buttons = [];
+    for (let i = 0; i <= data.totalPages - 1; i++) {
+      buttons.push(i);
+    }
+    // setPageButtons(buttons);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [currentPage]);
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -16,14 +50,6 @@ function PostPage() {
   const handleChange = (event: any) => {
     setSearch(event.target.value);
   };
-  const post = {
-    userId: "User_id",
-    Date: "2022.12.25",
-    photo: dog,
-    title: "글제목이 여기에 들어옵니다오...",
-    content:
-      "글 내용을 여기레오호호호호호호여기레오호호호호호호여기레오호호호호호...",
-  };
   return (
     <div className="post">
       <Header />
@@ -32,7 +58,7 @@ function PostPage() {
         <input
           className="postAdmin-input"
           value={search}
-          placeholder="검색"
+          placeholder="유저아이디 검색"
           onKeyDown={handleKeyDown}
           onChange={handleChange}
         />
@@ -43,18 +69,24 @@ function PostPage() {
         </div>
       </div>
       <div className="post-info">
-        <div className="post-info-wrapper" key={post.userId}>
-          <input className="post-info checkbox" type="checkbox" />
-          <div className="post-info userId">{post.userId}</div>
-          <div className="post-info date">
-            {moment(post.Date).format("YYYY.MM.DD")}
+        {postData?.map((post: Post, index: number) => (
+          <div className="post-info-wrapper">
+            <div className="post-info-upper" key={post.userId}>
+              <input className="post-info checkbox" type="checkbox" />
+              <div className="post-info userId">{post.userId}</div>
+              <div className="post-info date">
+                {moment(post.registDt, "YYYY.MM.DD/HH:mm/dddd").format(
+                  "YYYY-MM-DD"
+                )}
+              </div>
+            </div>
+            <div className="post-info photo">
+              <img src={post.photoUrl} alt="게시물 사진" />
+            </div>
+            <div className="post-info title">{post.placeName}</div>
+            <div className="post-info contents">{post.description}</div>
           </div>
-        </div>
-        <div className="post-info photo">
-          <img src={post.photo} alt="게시물 사진" />
-        </div>
-        <div className="post-info title">{post.title}</div>
-        <div className="post-info contents">{post.content}</div>
+        ))}
       </div>
     </div>
   );

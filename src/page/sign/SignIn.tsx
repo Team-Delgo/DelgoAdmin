@@ -22,7 +22,6 @@ function SignIn() {
   };
   const loginFetch = () => {
     signin({ email, password }, (response: AxiosResponse) => {
-      console.log(response);
       const { code, data } = response.data;
       if (code === 200) {
         navigation(MAIN_PATH.MAIN, { replace: true });

@@ -1,19 +1,24 @@
 .user {
   &-checkbox[type="checkbox"] {
-    all: unset;
-    width: 32px;
-    margin-right: 37px;
-    margin-top: 40px;
-    height: 32px;
-    background: #d9d9d9;
-    border-radius: 2px;
-    &:checked {
+    display: none;
+    & + label {
+      all: unset;
+      width: 32px;
+      margin-right: 37px;
+      margin-top: 40px;
+      height: 32px;
+      background: #d9d9d9;
+      border-radius: 2px;
+    }
+    &:checked + label {
+      background-color: black;
     }
   }
   &-admin {
     display: flex;
     justify-content: center;
     &-item {
+      all: unset;
       display: flex;
       margin-left: 44px;
       font-style: normal;
@@ -21,6 +26,9 @@
       font-size: 20px;
       line-height: 150%;
       text-decoration-line: underline;
+      &:disabled {
+        color: #c4c4c4;
+      }
     }
   }
   &-input {
@@ -30,7 +38,7 @@
     width: 259px;
     padding: 14px 20px;
     gap: 10px;
-    margin-right: 490px;
+    margin-right: 660px;
     background: #f2f2f2;
     border: none;
     &:focus {
@@ -44,7 +52,7 @@
     font-size: 20px;
     line-height: 150%;
     margin-top: 20px;
-    margin-left: 68px;
+    margin-left: 70px;
     justify-content: center;
     border-color: white;
     &-item {
@@ -53,37 +61,30 @@
       align-items: center;
       background-color: black;
       margin: 1px;
+      height: 62px;
       &.number {
         width: 87px;
-        height: 62px;
       }
       &.id {
-        width: 222px;
-        height: 62px;
+        width: 170px;
       }
       &.name {
         width: 147px;
-        height: 62px;
       }
       &.joinDate {
         width: 163px;
-        height: 62px;
       }
       &.profilePhoto {
         width: 221px;
-        height: 62px;
       }
       &.email {
         width: 357px;
-        height: 62px;
       }
       &.phoneNumber {
         width: 223px;
-        height: 62px;
       }
       &.userState {
         width: 163px;
-        height: 62px;
       }
     }
   }
@@ -92,10 +93,7 @@
     justify-content: center;
     height: 110px;
     color: #000000;
-    &-info-wrapper {
-      display: flex;
-      flex-direction: column;
-    }
+
     &-item {
       display: flex;
       background: #f2f2f2;
@@ -112,7 +110,7 @@
         color: white;
       }
       &.id {
-        width: 222px;
+        width: 170px;
       }
       &.name {
         width: 147px;
@@ -137,7 +135,7 @@
 }
 .userTitle {
   margin-top: 54px;
-  margin-left: -1230px;
+  margin-left: -1400px;
   margin-bottom: 16px;
   width: 79px;
   height: 30px;
@@ -154,16 +152,24 @@
   width: 102px;
   height: 102px;
 }
+.arrow-left {
+  width: 40px;
+  height: 40px;
+}
+.arrow-right {
+  width: 40px;
+  height: 40px;
+}
 .pagination {
   display: flex;
-  height: 90vh;
+  height: 100vh;
   justify-content: center; /*세로방향 가운데 정렬*/
-  align-items: center; /*가로방향 가운데 정렬*/
+  margin-top: 492px;
 
   & button {
     all: unset;
-    padding: 0 25px;
-    margin: 0 25px;
+    padding: 0 20px;
+    margin: 0 20px;
     width: 15px;
     height: 36px;
     font-style: normal;

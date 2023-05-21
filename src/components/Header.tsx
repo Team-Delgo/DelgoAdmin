@@ -12,8 +12,9 @@ function Header() {
   });
 
   const navigation = useNavigate();
-  const clickHandler = (e: any) => {
-    const { id } = e.target;
+  const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { id } = e.currentTarget;
+
     if (tab === id) return;
     setSeleceted((prev) => {
       const temp = {

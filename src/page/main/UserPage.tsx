@@ -1,42 +1,127 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, ChangeEvent } from "react";
 import Header from "../../components/Header";
+import leftArrow from "../../common/icons/leftArrow.svg";
+import rightArrow from "../../common/icons/rightArrow.svg";
 import axios, { AxiosResponse } from "axios";
 import "./UserPage.scss";
 import user from "../../common/api/user";
+import userOne from "../../common/api/userOne";
 import moment from "moment";
 import Modal from "../../components/Modal";
 
+export interface User {
+  userId: number;
+  email: string;
+  userName: string;
+  phoneNo: string;
+  address: string;
+  profile: string;
+  userSocial: string;
+  isNotify: boolean;
+  petId: number;
+  petName: string;
+  breedName: string;
+  birthday: string;
+  registDt: string;
+}
+
 function UserPage() {
-  const [userData, setUserData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [userData, setUserData] = useState<User[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
   const [pageButtons, setPageButtons] = useState<number[]>([]);
   const [search, setSearch] = useState("");
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [modalAlert, setModalAlert] = useState("");
+  const [checkedList, setCheckedList] = useState<Array<string>>([]);
+
   useEffect(() => {
-    async function fetchData() {
-      const res = await user(currentPage);
-      const { data, code } = res;
-      setUserData(data.content);
-      const buttons = [];
-      for (let i = 1; i <= data.totalPages; i++) {
-        buttons.push(i);
-      }
-      setPageButtons(buttons);
-    }
     fetchData();
   }, [currentPage]);
 
-  const enterKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      console.log(search);
+  const fetchData = async () => {
+    const res = await user(currentPage);
+    const { data, code } = res;
+    setUserData(data.content);
+    const buttons = [];
+    for (let i = 0; i <= data.totalPages - 1; i++) {
+      buttons.push(i);
+    }
+    setPageButtons(buttons);
+  };
+
+  const searchData = async () => {
+    if (search != "") {
+      const res = await userOne(search);
+      const { data, code } = res;
+
+      if (data) {
+        setUserData([data]);
+        console.log(data);
+        const buttons = [];
+        for (let i = 0; i <= data.totalPages - 1; i++) {
+          buttons.push(i);
+        }
+        setPageButtons(buttons);
+      } else {
+        setUserData([]);
+        setPageButtons([]);
+      }
+    } else {
+      fetchData();
     }
   };
-  const inputChange = (event: any) => {
+
+  const enterKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      await searchData();
+    }
+  };
+
+  const inputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
-  const totalButtonHandler = (event: any) => [];
+
+  const totalButtonHandler = () => {
+    setIsDisabled(false);
+  };
+
+  const deleteButtonHandler = () => {
+    console.log("delete");
+    setModalAlert("선택한 유저를 삭제하시겠습니까?");
+    setShowModal(true);
+  };
+
+  const stopButtonHandler = () => {
+    console.log("stop");
+    setModalAlert("선택한 유저를 정지하시겠습니까?");
+    setShowModal(true);
+  };
+
+  const saveButtonHandler = () => {
+    setIsDisabled(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const onCheckedItem = useCallback(
+    (checked: boolean, item: string) => {
+      if (checked) {
+        setCheckedList((prev) => [...prev, item]);
+        console.log(checkedList);
+      } else if (!checked) {
+        setCheckedList(checkedList.filter((el) => el !== item));
+      }
+    },
+    [checkedList]
+  );
+
   return (
     <div className="user">
+      {showModal && <Modal alert={modalAlert} no={closeModal} />}
       <Header />
       <div className="userTitle-Wrapper">
         <div className="userTitle">유저관리</div>
@@ -45,37 +130,66 @@ function UserPage() {
         <input
           className="user-input"
           value={search}
-          placeholder="이메일 검색"
+          placeholder="유저아이디 검색"
           onKeyDown={enterKeyDown}
           onChange={inputChange}
         />
-        <div className="user-admin-item fix" onClick={totalButtonHandler}>
+        <button className="user-admin-item fix" onClick={totalButtonHandler}>
           정보수정
-        </div>
-        <div className="user-admin-item delete">선택유저삭제</div>
-        <div className="user-admin-item stop">계정 정지</div>
-        <div className="user-admin-item save">변경 저장</div>
+        </button>
+        <button
+          className="user-admin-item delete"
+          onClick={deleteButtonHandler}
+          disabled={isDisabled}
+        >
+          선택유저삭제
+        </button>
+        <button
+          className="user-admin-item stop"
+          onClick={stopButtonHandler}
+          disabled={isDisabled}
+        >
+          계정 정지
+        </button>
+        <button
+          className="user-admin-item save"
+          onClick={saveButtonHandler}
+          disabled={isDisabled}
+        >
+          변경 저장
+        </button>
       </div>
       <div className="user-label">
         <label className="user-label-item number">No.</label>
+        <label className="user-label-item id">고유번호</label>
         <label className="user-label-item name">닉네임</label>
         <label className="user-label-item joinDate">가입일</label>
         <label className="user-label-item profilePhoto">프로필 사진</label>
-        <label className="user-label-item email">이메일</label>
+        <label className="user-label-item email">이메일(아이디)</label>
         <label className="user-label-item phoneNumber">전화번호</label>
         <label className="user-label-item userState">계정상태</label>
       </div>
       <div className="user-info">
         <div className="user-info-wrapper">
-          {userData?.map((user: any, index: number) => (
+          {userData?.map((user: User, index: number) => (
             <div className="user-info" key={user.userId}>
-              <input className="user-checkbox" type="checkbox" />
+              <input
+                className="user-checkbox"
+                id={String(user.userId)}
+                type="checkbox"
+                onChange={(e) => {
+                  onCheckedItem(e.target.checked, e.target.id);
+                }}
+              />
+              <label htmlFor={String(user.userId)}></label>
               <div className="user-info-item number">{index + 1}</div>
-              <div className="user-info-item name">{user.name}</div>
+              <div className="user-info-item id">{user.userId}</div>
+              <div className="user-info-item name">{user.userName}</div>
               <div className="user-info-item joinDate">
-                {moment(user.registDt).format("YYYY-MM-DD")}
+                {moment(user.registDt, "YYYY.MM.DD/HH:mm/dddd").format(
+                  "YYYY-MM-DD"
+                )}
               </div>
-
               <div className="user-info-item profilePhoto">
                 <img src={user.profile} alt="프로필 사진" id="profile" />
               </div>
@@ -87,26 +201,23 @@ function UserPage() {
         </div>
       </div>
       <div className="pagination">
+        {pageButtons.length > 10 && currentPage > 1 && (
+          <img src={leftArrow} alt="logo" className="arrow-left" />
+        )}
         {pageButtons.map((pageNumber) => (
           <button
             key={pageNumber}
             className={pageNumber === currentPage ? "active" : ""}
             onClick={() => setCurrentPage(pageNumber)}
           >
-            {pageNumber}
+            {pageNumber + 1}
           </button>
         ))}
+        {pageButtons.length > 10 && (
+          <img src={rightArrow} alt="logo" className="arrow-right" />
+        )}
       </div>
     </div>
   );
 }
 export default UserPage;
-
-{
-  /* <Modal
-alert={`
-삭제 시 되돌릴 수 없습니다.
-정말로 삭제하시겠습니까?
-`}
-/> */
-}
