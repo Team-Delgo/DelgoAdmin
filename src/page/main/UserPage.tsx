@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback, ChangeEvent } from "react";
 import Header from "../../components/Header";
 import leftArrow from "../../common/icons/leftArrow.svg";
 import rightArrow from "../../common/icons/rightArrow.svg";
-import axios, { AxiosResponse } from "axios";
+import green from "../../common/icons/green.svg";
+import red from "../../common/icons/red.svg";
 import "./UserPage.scss";
-import user from "../../common/api/user";
-import userOne from "../../common/api/userOne";
+import { user, userOne, userDelete } from "../../common/api/user";
 import moment from "moment";
 import Modal from "../../components/Modal";
 
@@ -88,7 +88,6 @@ function UserPage() {
   };
 
   const deleteButtonHandler = () => {
-    console.log("delete");
     setModalAlert("선택한 유저를 삭제하시겠습니까?");
     setShowModal(true);
   };
@@ -107,6 +106,15 @@ function UserPage() {
     setShowModal(false);
   };
 
+  const handleYesClick = async () => {
+    setShowModal(false);
+    for (const userId of checkedList) {
+      const response = await userDelete(userId);
+      console.log("데이터 삭제 완료:", response);
+    }
+    fetchData();
+  };
+
   const onCheckedItem = useCallback(
     (checked: boolean, item: string) => {
       if (checked) {
@@ -121,7 +129,9 @@ function UserPage() {
 
   return (
     <div className="user">
-      {showModal && <Modal alert={modalAlert} no={closeModal} />}
+      {showModal && (
+        <Modal alert={modalAlert} no={closeModal} onYes={handleYesClick} />
+      )}
       <Header />
       <div className="userTitle-Wrapper">
         <div className="userTitle">유저관리</div>
@@ -177,6 +187,7 @@ function UserPage() {
                 className="user-checkbox"
                 id={String(user.userId)}
                 type="checkbox"
+                disabled={isDisabled}
                 onChange={(e) => {
                   onCheckedItem(e.target.checked, e.target.id);
                 }}

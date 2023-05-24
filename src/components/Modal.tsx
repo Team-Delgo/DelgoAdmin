@@ -3,16 +3,22 @@ import "./Modal.scss";
 
 type Props = {
   alert?: string;
-  yes?: React.MouseEventHandler<HTMLButtonElement>;
+  onYes?: React.MouseEventHandler<HTMLButtonElement>;
   no?: React.MouseEventHandler<HTMLButtonElement>;
 };
-const Modal = ({ alert, yes, no }: Props) => {
+const Modal = ({ alert, onYes, no }: Props) => {
+  const handleYesClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (onYes) {
+      onYes(event); // 부모 컴포넌트에 이벤트 전달
+    }
+  };
+
   return (
     <div className="modal">
       <div className="modal-wrapper">
         <div className="modal-container">{alert}</div>
         <div className="button-box">
-          <button className="button-yes" onClick={yes}>
+          <button className="button-yes" onClick={handleYesClick}>
             예
           </button>
           <button className="button-no" onClick={no}>

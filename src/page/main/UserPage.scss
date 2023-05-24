@@ -17,10 +17,11 @@
   &-admin {
     display: flex;
     justify-content: center;
+    width: 100vw;
     &-item {
       all: unset;
       display: flex;
-      margin-left: 44px;
+      margin-right: 40px;
       font-style: normal;
       font-weight: 500;
       font-size: 20px;
@@ -38,7 +39,7 @@
     width: 259px;
     padding: 14px 20px;
     gap: 10px;
-    margin-right: 660px;
+    margin-right: 765px;
     background: #f2f2f2;
     border: none;
     &:focus {
@@ -52,7 +53,6 @@
     font-size: 20px;
     line-height: 150%;
     margin-top: 20px;
-    margin-left: 70px;
     justify-content: center;
     border-color: white;
     &-item {
@@ -93,7 +93,7 @@
     justify-content: center;
     height: 110px;
     color: #000000;
-
+    margin-right: 35px;
     &-item {
       display: flex;
       background: #f2f2f2;
@@ -135,7 +135,7 @@
 }
 .userTitle {
   margin-top: 54px;
-  margin-left: -1400px;
+  margin-left: -1465px;
   margin-bottom: 16px;
   width: 79px;
   height: 30px;
