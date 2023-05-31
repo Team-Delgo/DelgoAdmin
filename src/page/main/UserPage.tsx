@@ -23,6 +23,7 @@ export interface User {
   breedName: string;
   birthday: string;
   registDt: string;
+  isChecked: boolean;
 }
 
 function UserPage() {
@@ -35,6 +36,9 @@ function UserPage() {
   const [modalAlert, setModalAlert] = useState("");
   const [checkedList, setCheckedList] = useState<Array<string>>([]);
 
+  const startPage = Math.floor(currentPage / 10) * 10; // 현재 페이지가 속한 그룹의 시작 페이지
+  const endPage = Math.min(startPage + 9, pageButtons.length - 1);
+
   useEffect(() => {
     fetchData();
   }, [currentPage]);
@@ -43,6 +47,7 @@ function UserPage() {
     const res = await user(currentPage);
     const { data, code } = res;
     setUserData(data.content);
+    //checked 추가 만약 checkedlist에 userId 들어있을시
     const buttons = [];
     for (let i = 0; i <= data.totalPages - 1; i++) {
       buttons.push(i);
@@ -57,7 +62,7 @@ function UserPage() {
 
       if (data) {
         setUserData([data]);
-        console.log(data);
+
         const buttons = [];
         for (let i = 0; i <= data.totalPages - 1; i++) {
           buttons.push(i);
@@ -98,21 +103,24 @@ function UserPage() {
     setShowModal(true);
   };
 
-  const saveButtonHandler = () => {
-    setIsDisabled(true);
-  };
-
   const closeModal = () => {
     setShowModal(false);
   };
 
   const handleYesClick = async () => {
     setShowModal(false);
-    for (const userId of checkedList) {
-      const response = await userDelete(userId);
-      console.log("데이터 삭제 완료:", response);
+    if (checkedList.length === 0) {
+      console.log("없음");
+    } else {
+      console.log(checkedList);
+      for (const userId of checkedList) {
+        const response = await userDelete(userId);
+        setCheckedList([]);
+        console.log("데이터 삭제 완료:", response);
+      }
+      fetchData();
     }
-    fetchData();
+    setIsDisabled(true);
   };
 
   const onCheckedItem = useCallback(
@@ -161,13 +169,6 @@ function UserPage() {
         >
           계정 정지
         </button>
-        <button
-          className="user-admin-item save"
-          onClick={saveButtonHandler}
-          disabled={isDisabled}
-        >
-          변경 저장
-        </button>
       </div>
       <div className="user-label">
         <label className="user-label-item number">No.</label>
@@ -188,6 +189,7 @@ function UserPage() {
                 id={String(user.userId)}
                 type="checkbox"
                 disabled={isDisabled}
+                checked={user.isChecked}
                 onChange={(e) => {
                   onCheckedItem(e.target.checked, e.target.id);
                 }}
@@ -212,10 +214,15 @@ function UserPage() {
         </div>
       </div>
       <div className="pagination">
-        {pageButtons.length > 10 && currentPage > 1 && (
-          <img src={leftArrow} alt="logo" className="arrow-left" />
+        {startPage > 0 && (
+          <img
+            src={leftArrow}
+            alt="logo"
+            className="arrow-left"
+            onClick={() => setCurrentPage(startPage - 1)}
+          />
         )}
-        {pageButtons.map((pageNumber) => (
+        {pageButtons.slice(startPage, endPage + 1).map((pageNumber) => (
           <button
             key={pageNumber}
             className={pageNumber === currentPage ? "active" : ""}
@@ -224,8 +231,13 @@ function UserPage() {
             {pageNumber + 1}
           </button>
         ))}
-        {pageButtons.length > 10 && (
-          <img src={rightArrow} alt="logo" className="arrow-right" />
+        {endPage < pageButtons.length - 1 && (
+          <img
+            src={rightArrow}
+            alt="logo"
+            className="arrow-right"
+            onClick={() => setCurrentPage(endPage + 1)}
+          />
         )}
       </div>
     </div>

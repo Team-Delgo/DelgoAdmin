@@ -2,12 +2,19 @@ import React, { useState, useEffect, useCallback, ChangeEvent } from "react";
 import Header from "../../components/Header";
 import leftArrow from "../../common/icons/leftArrow.svg";
 import rightArrow from "../../common/icons/rightArrow.svg";
+import dowmArrow from "../../common/icons/downArrow.svg";
 import "./Main.scss";
 import moment from "moment";
 import { place, placeOne } from "../../common/api/place";
 import Modal from "../../components/Modal";
 
-export interface Place {}
+export interface Place {
+  mungpleId: number;
+  categoryCode: string;
+  placeName: string;
+  jibunAddress: string;
+  photoUrl: string | undefined;
+}
 
 function MainPage() {
   const [placeData, setplaceData] = useState<Place[]>([]);
@@ -17,13 +24,17 @@ function MainPage() {
   const [showModal, setShowModal] = useState(false);
   const [modalAlert, setModalAlert] = useState("");
   const [checkedList, setCheckedList] = useState<Array<string>>([]);
+  const [category, setCategory] = useState<string>("CA0000");
+
+  const startPage = Math.floor(currentPage / 10) * 10; // 현재 페이지가 속한 그룹의 시작 페이지
+  const endPage = Math.min(startPage + 9, pageButtons.length - 1);
 
   useEffect(() => {
     fetchData();
   }, [currentPage]);
 
   const fetchData = async () => {
-    const res = await place(currentPage);
+    const res = await place(currentPage, category);
     const { data, code } = res;
     setplaceData(data.content);
     const buttons = [];
@@ -116,42 +127,58 @@ function MainPage() {
       </div>
       <div className="place-label">
         <label className="place-label-item number">No.</label>
-        <label className="place-label-item category">카테고리</label>
+        <label className="place-label-item category">
+          카테고리
+          <img src={dowmArrow} className="arrow-down" />
+        </label>
         <label className="place-label-item name">업체이름</label>
         <label className="place-label-item address">주소</label>
         <label className="place-label-item photo">업체사진 썸네일</label>
         <label className="place-label-item detail">상세수정</label>
       </div>
       <div className="place-info">
-        {/* <div className="place-info-wrapper">
+        <div className="place-info-wrapper">
           {placeData?.map((place: Place, index: number) => (
-            <div className="place-info" key={place.placeId}>
+            <div className="place-info" key={place.mungpleId}>
               <input
                 className="place-checkbox"
-                id={String(place.placeId)}
+                id={String(place.mungpleId)}
                 type="checkbox"
                 onChange={(e) => {
                   onCheckedItem(e.target.checked, e.target.id);
                 }}
               />
-              <label htmlFor={String(place.placeId)}></label>
+              <label htmlFor={String(place.mungpleId)}></label>
               <div className="place-info-item number">{index + 1}</div>
-              <div className="place-info-item category">{place.category}</div>
-              <div className="place-info-item name">{place.name}</div>
-              <div className="place-info-item address">{place.adress}</div>
-              <div className="place-info-item profilePhoto">
-                <img src={place.photo} alt="프로필 사진" id="profile" />
+              <div className="place-info-item category">
+                {place.categoryCode}
               </div>
-              <div className="place-info-item placeState">수정</div>
+              <div className="place-info-item name">{place.placeName}</div>
+              <div className="place-info-item address">
+                {place.jibunAddress}
+              </div>
+              <div className="place-info-item profilePhoto">
+                {place.photoUrl ? (
+                  <img src={place.photoUrl} alt="프로필 사진" id="profile" />
+                ) : (
+                  <p>없음</p>
+                )}
+              </div>
+              <div className="place-info-item detail">수정</div>
             </div>
           ))}
-        </div> */}
+        </div>
       </div>
       <div className="pagination">
-        {pageButtons.length > 10 && currentPage > 1 && (
-          <img src={leftArrow} alt="logo" className="arrow-left" />
+        {startPage > 0 && (
+          <img
+            src={leftArrow}
+            alt="logo"
+            className="arrow-left"
+            onClick={() => setCurrentPage(startPage - 1)}
+          />
         )}
-        {pageButtons.map((pageNumber) => (
+        {pageButtons.slice(startPage, endPage + 1).map((pageNumber) => (
           <button
             key={pageNumber}
             className={pageNumber === currentPage ? "active" : ""}
@@ -160,8 +187,13 @@ function MainPage() {
             {pageNumber + 1}
           </button>
         ))}
-        {pageButtons.length > 10 && (
-          <img src={rightArrow} alt="logo" className="arrow-right" />
+        {endPage < pageButtons.length - 1 && (
+          <img
+            src={rightArrow}
+            alt="logo"
+            className="arrow-right"
+            onClick={() => setCurrentPage(endPage + 1)}
+          />
         )}
       </div>
     </div>

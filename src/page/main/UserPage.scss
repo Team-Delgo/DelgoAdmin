@@ -39,7 +39,7 @@
     width: 259px;
     padding: 14px 20px;
     gap: 10px;
-    margin-right: 765px;
+    margin-right: 890px;
     background: #f2f2f2;
     border: none;
     &:focus {
@@ -99,13 +99,13 @@
       background: #f2f2f2;
       justify-content: center;
       align-items: center;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 150%;
       margin: 1px;
       &.number {
         width: 87px;
-        font-style: normal;
-        font-weight: 500;
-        font-size: 20px;
-        line-height: 150%;
         background-color: black;
         color: white;
       }

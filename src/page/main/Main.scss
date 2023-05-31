@@ -87,6 +87,7 @@
     justify-content: center;
     height: 110px;
     color: #000000;
+    margin-right: 35px;
 
     &-item {
       display: flex;
@@ -94,29 +95,29 @@
       justify-content: center;
       align-items: center;
       margin: 1px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 150%;
       &.number {
-        width: 87px;
-        font-style: normal;
-        font-weight: 500;
-        font-size: 20px;
-        line-height: 150%;
+        width: 96px;
         background-color: black;
         color: white;
       }
       &.category {
-        width: 170px;
+        width: 164px;
       }
       &.name {
-        width: 147px;
+        width: 393px;
       }
       &.address {
-        width: 163px;
+        width: 502px;
       }
-      &.photo {
-        width: 221px;
+      &.profilePhoto {
+        width: 258px;
       }
       &.detail {
-        width: 221px;
+        width: 180px;
       }
     }
   }
@@ -170,4 +171,7 @@
       color: black;
     }
   }
+}
+.arrow-down {
+  margin-left: 11.91px;
 }

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, ChangeEvent } from "react";
 import Header from "../../components/Header";
 import "./PostPage.scss";
 import moment from "moment";
 import Modal from "../../components/Modal";
-import { post, postOne } from "../../common/api/post";
+import { post, postOne, postDelete } from "../../common/api/post";
 
 export interface Post {
   certificationId: number;
@@ -24,14 +24,15 @@ function PostPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [postData, setPostData] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
+
   const [lastPage, setLastPage] = useState(false);
-  const pageEnd = useRef<any>();
+  const pageEnd = useRef<any>(null);
 
   const fetchData = async () => {
     setLoading(true);
     const res = await post(currentPage);
     const { data, code } = res;
-    console.log(data.last);
+    console.log(data);
     setLastPage(data.last);
     setPostData((prevData) => [...prevData, ...data.content]);
     setLoading(false);
@@ -41,34 +42,48 @@ function PostPage() {
     fetchData();
   }, [currentPage]);
 
-  const loadMore = () => {
-    if (!lastPage && !loading) setCurrentPage((prev) => prev + 1);
+  useEffect(() => {
+    const handleScroll = () => {
+      const { scrollTop, offsetHeight } = document.documentElement;
+      if (window.innerHeight + scrollTop >= offsetHeight) {
+        console.log(search);
+        if (!lastPage && !loading && search === "") {
+          setCurrentPage((prev) => prev + 1);
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastPage, search]);
+
+  const searchData = async () => {
+    if (search != "") {
+      const res = await postOne(search);
+      const { data, code } = res;
+      if (data) {
+        setPostData(data.content);
+      } else {
+        setPostData([]);
+      }
+    } else {
+      setPostData([]);
+      fetchData();
+      console.log("reset");
+    }
   };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver( // IntersectionObserver를 생성하여 새로운 observer 변수에 할당합니다.
-      (entries: any) => {
-        if (entries[0].isIntersecting) {
-          // entries는 관찰 대상 요소의 배열입니다. 배열의 첫 번째 요소를 사용합니다.
-          loadMore(); // 첫 번째 요소가 화면에 진입한 경우 loadMore 함수를 호출합니다.
-        }
-      },
-      { threshold: 0.8 } // 옵션 객체를 전달하여 관찰자를 설정합니다.
-    );
-    if (pageEnd.current) {
-      observer.observe(pageEnd.current); // 페이지의 하단 요소를 관찰 대상으로 등록합니다.
-    }
-  }, []);
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const enterKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      console.log(search);
+      // console.log(search);
+      await searchData();
     }
   };
-  const handleChange = (event: any) => {
+
+  const inputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
+
   return (
     <div className="post">
       <Header />
@@ -78,8 +93,8 @@ function PostPage() {
           className="postAdmin-input"
           value={search}
           placeholder="유저아이디 검색"
-          onKeyDown={handleKeyDown}
-          onChange={handleChange}
+          onKeyDown={enterKeyDown}
+          onChange={inputChange}
         />
         <div className="postAdmin-button">
           <div className="postAdmin-button showA">전체글 보기</div>

@@ -7,7 +7,7 @@ async function user(page: number) {
       `https://admin.delgo.pet/api/user/all?page=${page}&size=${size}`
       //size:한페이지에 불러올 데이터 개수, page:현재 페이지
     );
-    console.log(res.data);
+    // console.log(res.data);
     return res.data;
   } catch (error: any) {
     console.error(error);
