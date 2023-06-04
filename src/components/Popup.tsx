@@ -35,7 +35,6 @@ function Popup({ onClose, userId }: Props) {
 
   const searchData = async () => {
     const res = await postOne(userId);
-    console.log(userId);
     const { data, code } = res;
     setPostData(data.content);
   };
@@ -45,24 +44,28 @@ function Popup({ onClose, userId }: Props) {
       <div className="Popup-wrapper">
         <img src={close} alt="logo" className="close" onClick={onClose} />
         <div className="Popup-content">
-          {postData?.map((post: Post, index: number) => (
-            <div className="post-info-wrapper">
-              <div className="post-info-upper" key={post.userId}>
-                <input className="post-info checkbox" type="checkbox" />
-                <div className="post-info userId">{post.userId}</div>
-                <div className="post-info date">
-                  {moment(post.registDt, "YYYY.MM.DD/HH:mm/dddd").format(
-                    "YYYY.MM.DD"
-                  )}
+          {postData.length === 0 ? (
+            <div className="no-posts">게시글이 없습니다.</div>
+          ) : (
+            postData.map((post: Post, index: number) => (
+              <div className="post-info-wrapper" key={post.userId}>
+                <div className="post-info-upper">
+                  <input className="post-info checkbox" type="checkbox" />
+                  <div className="post-info userId">{post.userId}</div>
+                  <div className="post-info date">
+                    {moment(post.registDt, "YYYY.MM.DD/HH:mm/dddd").format(
+                      "YYYY.MM.DD"
+                    )}
+                  </div>
                 </div>
+                <div className="post-info photo">
+                  <img src={post.photoUrl} alt="게시물 사진" />
+                </div>
+                <div className="post-info title">{post.placeName}</div>
+                <div className="post-info contents">{post.description}</div>
               </div>
-              <div className="post-info photo">
-                <img src={post.photoUrl} alt="게시물 사진" />
-              </div>
-              <div className="post-info title">{post.placeName}</div>
-              <div className="post-info contents">{post.description}</div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>
