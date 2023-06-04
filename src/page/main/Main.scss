@@ -67,6 +67,7 @@
       }
       &.category {
         width: 164px;
+        list-style: none;
       }
       &.name {
         width: 393px;
@@ -174,4 +175,8 @@
 }
 .arrow-down {
   margin-left: 11.91px;
+}
+.dropdown-wrapper {
+  position: absolute;
+  top: 346px;
 }

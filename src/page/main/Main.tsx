@@ -2,9 +2,9 @@ import React, { useState, useEffect, useCallback, ChangeEvent } from "react";
 import Header from "../../components/Header";
 import leftArrow from "../../common/icons/leftArrow.svg";
 import rightArrow from "../../common/icons/rightArrow.svg";
-import dowmArrow from "../../common/icons/downArrow.svg";
+import downArrow from "../../common/icons/downArrow.svg";
 import "./Main.scss";
-import moment from "moment";
+import DropDown from "../../components/DropDown";
 import { place, placeOne } from "../../common/api/place";
 import Modal from "../../components/Modal";
 
@@ -17,11 +17,12 @@ export interface Place {
 }
 
 function MainPage() {
-  const [placeData, setplaceData] = useState<Place[]>([]);
+  const [placeData, setPlaceData] = useState<Place[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageButtons, setPageButtons] = useState<number[]>([]);
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [showDropDown, setShowDropDown] = useState(false);
   const [modalAlert, setModalAlert] = useState("");
   const [checkedList, setCheckedList] = useState<Array<string>>([]);
   const [category, setCategory] = useState<string>("CA0000");
@@ -31,12 +32,13 @@ function MainPage() {
 
   useEffect(() => {
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, category]);
 
   const fetchData = async () => {
     const res = await place(currentPage, category);
     const { data, code } = res;
-    setplaceData(data.content);
+    //console.log(res.data)
+    setPlaceData(data.content);
     const buttons = [];
     for (let i = 0; i <= data.totalPages - 1; i++) {
       buttons.push(i);
@@ -50,7 +52,7 @@ function MainPage() {
       const { data, code } = res;
 
       if (data) {
-        setplaceData([data]);
+        setPlaceData([data]);
         console.log(data);
         const buttons = [];
         for (let i = 0; i <= data.totalPages - 1; i++) {
@@ -58,7 +60,7 @@ function MainPage() {
         }
         setPageButtons(buttons);
       } else {
-        setplaceData([]);
+        setPlaceData([]);
         setPageButtons([]);
       }
     } else {
@@ -100,6 +102,14 @@ function MainPage() {
     [checkedList]
   );
 
+  const dropDownHandler = (selectedValue: string) => {
+    console.log("Selected value:", selectedValue);
+    setCategory(selectedValue);
+    setShowDropDown(false);
+    fetchData();
+    setCurrentPage(0);
+  };
+
   return (
     <div className="place">
       {showModal && <Modal alert={modalAlert} no={closeModal} />}
@@ -129,7 +139,16 @@ function MainPage() {
         <label className="place-label-item number">No.</label>
         <label className="place-label-item category">
           카테고리
-          <img src={dowmArrow} className="arrow-down" />
+          <img
+            src={downArrow}
+            className="arrow-down"
+            onClick={() => {
+              setShowDropDown((prevState) => !prevState);
+            }}
+          />
+          <div className="dropdown-wrapper">
+            {showDropDown && <DropDown onClick={dropDownHandler} />}
+          </div>
         </label>
         <label className="place-label-item name">업체이름</label>
         <label className="place-label-item address">주소</label>
