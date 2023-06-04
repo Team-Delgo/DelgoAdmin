@@ -58,7 +58,7 @@ function PostPage() {
 
   const searchData = async () => {
     if (search != "") {
-      const res = await postOne(search);
+      const res = await postOne(parseInt(search));
       const { data, code } = res;
       if (data) {
         setPostData(data.content);

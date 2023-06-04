@@ -21,7 +21,7 @@
     &-item {
       all: unset;
       display: flex;
-      margin-right: 40px;
+      margin-right: 32px;
       font-style: normal;
       font-weight: 500;
       font-size: 20px;
@@ -162,9 +162,9 @@
 }
 .pagination {
   display: flex;
-  height: 100vh;
   justify-content: center; /*세로방향 가운데 정렬*/
-  margin-top: 492px;
+  height: 36px;
+  margin: 492px 0px 30px 0px;
 
   & button {
     all: unset;

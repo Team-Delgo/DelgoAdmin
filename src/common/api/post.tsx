@@ -12,7 +12,7 @@ async function post(page: number) {
     console.error(error);
   }
 }
-async function postOne(userId: string) {
+async function postOne(userId: number) {
   try {
     const res = await axios.get(
       `https://admin.delgo.pet/api/certification/all?userId=${userId}`
@@ -24,7 +24,7 @@ async function postOne(userId: string) {
     console.error(error);
   }
 }
-async function postDelete(userId: string) {
+async function postDelete(userId: number) {
   try {
     const res = await axios.delete(
       `https://admin.delgo.pet/api/certification/${userId}`

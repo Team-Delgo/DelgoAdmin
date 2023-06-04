@@ -8,6 +8,7 @@ import "./UserPage.scss";
 import { user, userOne, userDelete } from "../../common/api/user";
 import moment from "moment";
 import Modal from "../../components/Modal";
+import Popup from "../../components/Popup";
 
 export interface User {
   userId: number;
@@ -35,6 +36,8 @@ function UserPage() {
   const [showModal, setShowModal] = useState(false);
   const [modalAlert, setModalAlert] = useState("");
   const [checkedList, setCheckedList] = useState<Array<string>>([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(0);
 
   const startPage = Math.floor(currentPage / 10) * 10; // 현재 페이지가 속한 그룹의 시작 페이지
   const endPage = Math.min(startPage + 9, pageButtons.length - 1);
@@ -103,11 +106,11 @@ function UserPage() {
     setShowModal(true);
   };
 
-  const closeModal = () => {
+  const closeModalHandler = () => {
     setShowModal(false);
   };
 
-  const handleYesClick = async () => {
+  const YesClickHandler = async () => {
     setShowModal(false);
     if (checkedList.length === 0) {
       console.log("없음");
@@ -134,12 +137,31 @@ function UserPage() {
     },
     [checkedList]
   );
+  const profileImageClickHandler = (userId: number) => {
+    setSelectedUserId(userId);
+    document.body.style.overflow = "hidden";
+    setShowPopup(true);
+    console.log(userId);
+  };
+
+  const PopupCloseHandler = () => {
+    document.body.style.overflow = "unset";
+    setShowPopup(false);
+  };
 
   return (
     <div className="user">
       {showModal && (
-        <Modal alert={modalAlert} no={closeModal} onYes={handleYesClick} />
+        <Modal
+          alert={modalAlert}
+          no={closeModalHandler}
+          onYes={YesClickHandler}
+        />
       )}
+      {showPopup && (
+        <Popup onClose={PopupCloseHandler} userId={selectedUserId} />
+      )}
+
       <Header />
       <div className="userTitle-Wrapper">
         <div className="userTitle">유저관리</div>
@@ -204,7 +226,12 @@ function UserPage() {
                 )}
               </div>
               <div className="user-info-item profilePhoto">
-                <img src={user.profile} alt="프로필 사진" id="profile" />
+                <img
+                  src={user.profile}
+                  alt="프로필 사진"
+                  id="profile"
+                  onClick={() => profileImageClickHandler(user.userId)}
+                />
               </div>
               <div className="user-info-item email">{user.email}</div>
               <div className="user-info-item phoneNumber">{user.phoneNo}</div>
