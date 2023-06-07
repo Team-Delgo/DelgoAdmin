@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, ChangeEvent } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  ChangeEvent,
+} from "react";
 import Header from "../../components/Header";
 import "./PostPage.scss";
 import moment from "moment";
@@ -17,6 +23,7 @@ export interface Post {
   userProfile: string;
   likeCount: number;
   registDt: string;
+  isChecked: boolean;
 }
 
 function PostPage() {
@@ -24,7 +31,7 @@ function PostPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [postData, setPostData] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
-
+  const [checkedList, setCheckedList] = useState<Array<string>>([]);
   const [lastPage, setLastPage] = useState(false);
   const pageEnd = useRef<any>(null);
 
@@ -32,7 +39,7 @@ function PostPage() {
     setLoading(true);
     const res = await post(currentPage);
     const { data, code } = res;
-    console.log(data);
+    //console.log(data);
     setLastPage(data.last);
     setPostData((prevData) => [...prevData, ...data.content]);
     setLoading(false);
@@ -84,6 +91,18 @@ function PostPage() {
     setSearch(event.target.value);
   };
 
+  const onCheckedItem = useCallback(
+    (checked: boolean, item: string) => {
+      if (checked) {
+        setCheckedList((prev) => [...prev, item]);
+        console.log(checkedList);
+      } else if (!checked) {
+        setCheckedList(checkedList.filter((el) => el !== item));
+      }
+    },
+    [checkedList]
+  );
+
   return (
     <div className="post">
       <Header />
@@ -107,7 +126,15 @@ function PostPage() {
           {postData?.map((post: Post, index: number) => (
             <div className="post-info-wrapper">
               <div className="post-info-upper" key={post.userId}>
-                <input className="post-info checkbox" type="checkbox" />
+                <input
+                  className="post-info checkbox"
+                  id={String(post.userId)}
+                  type="checkbox"
+                  checked={post.isChecked}
+                  onChange={(e) => {
+                    onCheckedItem(e.target.checked, e.target.id);
+                  }}
+                />
                 <div className="post-info userId">{post.userId}</div>
                 <div className="post-info date">
                   {moment(post.registDt, "YYYY.MM.DD/HH:mm/dddd").format(

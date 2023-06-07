@@ -44,13 +44,23 @@ function UserPage() {
 
   useEffect(() => {
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, checkedList]);
 
   const fetchData = async () => {
     const res = await user(currentPage);
     const { data, code } = res;
     setUserData(data.content);
-    //checked 추가 만약 checkedlist에 userId 들어있을시
+    //체크박스 checked로 화면에 보여주기 만약 checkedlist에 userId 들어있을시
+    const updatedData: User[] = data.content.map((user: User) => {
+      const isChecked = checkedList.includes(user.userId.toString());
+      return {
+        ...user,
+        isChecked,
+      };
+    });
+
+    setUserData(updatedData);
+
     const buttons = [];
     for (let i = 0; i <= data.totalPages - 1; i++) {
       buttons.push(i);
@@ -137,6 +147,7 @@ function UserPage() {
     },
     [checkedList]
   );
+
   const profileImageClickHandler = (userId: number) => {
     setSelectedUserId(userId);
     document.body.style.overflow = "hidden";
