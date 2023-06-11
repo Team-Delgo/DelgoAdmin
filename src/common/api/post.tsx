@@ -24,10 +24,10 @@ async function postOne(userId: number) {
     console.error(error);
   }
 }
-async function postDelete(userId: number) {
+async function postDelete(certificationId: string) {
   try {
     const res = await axios.delete(
-      `https://admin.delgo.pet/api/certification/${userId}`
+      `https://admin.delgo.pet/api/certification/${certificationId}`
       //size:한페이지에 불러올 데이터 개수, page:현재 페이지
     );
     return res.data;

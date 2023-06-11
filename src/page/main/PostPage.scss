@@ -83,12 +83,18 @@
       margin-bottom: 7.5px;
     }
     &.checkbox {
-      box-sizing: border-box;
-      width: 21px;
-      height: 21px;
-      background: #f2f2f2;
-      border: 1px solid #000000;
-      border-radius: 2px;
+      display: none;
+      & + label {
+        box-sizing: border-box;
+        width: 21px;
+        height: 21px;
+        background: #f2f2f2;
+        border: 1px solid #000000;
+        border-radius: 2px;
+      }
+      &:checked + label {
+        background-color: black;
+      }
     }
     &.userId {
       display: inline-block;

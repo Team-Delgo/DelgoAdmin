@@ -131,6 +131,7 @@ function UserPage() {
         setCheckedList([]);
         console.log("데이터 삭제 완료:", response);
       }
+
       fetchData();
     }
     setIsDisabled(true);

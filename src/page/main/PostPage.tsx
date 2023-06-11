@@ -10,6 +10,7 @@ import "./PostPage.scss";
 import moment from "moment";
 import Modal from "../../components/Modal";
 import { post, postOne, postDelete } from "../../common/api/post";
+import { current } from "@reduxjs/toolkit";
 
 export interface Post {
   certificationId: number;
@@ -34,12 +35,14 @@ function PostPage() {
   const [checkedList, setCheckedList] = useState<Array<string>>([]);
   const [lastPage, setLastPage] = useState(false);
   const pageEnd = useRef<any>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalAlert, setModalAlert] = useState("");
 
   const fetchData = async () => {
     setLoading(true);
     const res = await post(currentPage);
     const { data, code } = res;
-    //console.log(data);
+    console.log(currentPage);
     setLastPage(data.last);
     setPostData((prevData) => [...prevData, ...data.content]);
     setLoading(false);
@@ -102,9 +105,38 @@ function PostPage() {
     },
     [checkedList]
   );
+  const deleteButtonHandler = () => {
+    setModalAlert("삭제시 되돌릴 수 없습니다.\n정말로 삭제하시겠습니까?");
+    setShowModal(true);
+  };
+  const closeModalHandler = () => {
+    setShowModal(false);
+  };
+
+  const YesClickHandler = async () => {
+    setShowModal(false);
+    if (checkedList.length === 0) {
+      console.log("없음");
+    } else {
+      console.log(checkedList);
+      for (const certificationId of checkedList) {
+        const response = await postDelete(certificationId);
+        setCheckedList([]);
+        console.log("데이터 삭제 완료:", response);
+      }
+      window.location.reload();
+    }
+  };
 
   return (
     <div className="post">
+      {showModal && (
+        <Modal
+          alert={modalAlert}
+          no={closeModalHandler}
+          onYes={YesClickHandler}
+        />
+      )}
       <Header />
       <div className="postAdmin">
         <div className="postAdmin-Title">인증글 관리</div>
@@ -118,23 +150,29 @@ function PostPage() {
         <div className="postAdmin-button">
           <div className="postAdmin-button showA">전체글 보기</div>
           <div className="postAdmin-button showR">신고글만 보기</div>
-          <div className="postAdmin-button delete">선택글 삭제</div>
+          <div
+            className="postAdmin-button delete"
+            onClick={deleteButtonHandler}
+          >
+            선택글 삭제
+          </div>
         </div>
       </div>
       <div className="post-info">
         <div className="post-info-wrapper-container" ref={pageEnd}>
           {postData?.map((post: Post, index: number) => (
             <div className="post-info-wrapper">
-              <div className="post-info-upper" key={post.userId}>
+              <div className="post-info-upper" key={post.certificationId}>
                 <input
                   className="post-info checkbox"
-                  id={String(post.userId)}
+                  id={String(post.certificationId)}
                   type="checkbox"
                   checked={post.isChecked}
                   onChange={(e) => {
                     onCheckedItem(e.target.checked, e.target.id);
                   }}
                 />
+                <label htmlFor={String(post.certificationId)}></label>
                 <div className="post-info userId">{post.userId}</div>
                 <div className="post-info date">
                   {moment(post.registDt, "YYYY.MM.DD/HH:mm/dddd").format(
