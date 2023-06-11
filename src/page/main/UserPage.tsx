@@ -106,14 +106,17 @@ function UserPage() {
   };
 
   const deleteButtonHandler = () => {
-    setModalAlert("선택한 유저를 삭제하시겠습니까?");
-    setShowModal(true);
+    if (checkedList.length != 0) {
+      setModalAlert("선택한 유저를 삭제하시겠습니까?");
+      setShowModal(true);
+    }
   };
 
   const stopButtonHandler = () => {
-    console.log("stop");
-    setModalAlert("선택한 유저를 정지하시겠습니까?");
-    setShowModal(true);
+    if (checkedList.length != 0) {
+      setModalAlert("선택한 유저를 정지하시겠습니까?");
+      setShowModal(true);
+    }
   };
 
   const closeModalHandler = () => {
@@ -131,7 +134,6 @@ function UserPage() {
         setCheckedList([]);
         console.log("데이터 삭제 완료:", response);
       }
-
       fetchData();
     }
     setIsDisabled(true);

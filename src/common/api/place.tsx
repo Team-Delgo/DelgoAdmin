@@ -24,4 +24,17 @@ async function placeOne(userId: string) {
     console.error(error);
   }
 }
-export { place, placeOne };
+
+async function placeDelete(mungpleId: string) {
+  try {
+    const res = await axios.delete(
+      `https://admin.delgo.pet/api/mungple/${mungpleId}`
+      //size:한페이지에 불러올 데이터 개수, page:현재 페이지
+    );
+    return res.data;
+  } catch (error: any) {
+    console.error(error);
+  }
+}
+
+export { place, placeOne, placeDelete };

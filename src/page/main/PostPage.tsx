@@ -42,7 +42,7 @@ function PostPage() {
     setLoading(true);
     const res = await post(currentPage);
     const { data, code } = res;
-    console.log(currentPage);
+    // console.log(currentPage);
     setLastPage(data.last);
     setPostData((prevData) => [...prevData, ...data.content]);
     setLoading(false);
@@ -106,8 +106,10 @@ function PostPage() {
     [checkedList]
   );
   const deleteButtonHandler = () => {
-    setModalAlert("삭제시 되돌릴 수 없습니다.\n정말로 삭제하시겠습니까?");
-    setShowModal(true);
+    if (checkedList.length != 0) {
+      setModalAlert("삭제시 되돌릴 수 없습니다.\n정말로 삭제하시겠습니까?");
+      setShowModal(true);
+    }
   };
   const closeModalHandler = () => {
     setShowModal(false);

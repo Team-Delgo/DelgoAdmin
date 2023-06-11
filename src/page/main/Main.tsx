@@ -5,7 +5,7 @@ import rightArrow from "../../common/icons/rightArrow.svg";
 import downArrow from "../../common/icons/downArrow.svg";
 import "./Main.scss";
 import DropDown from "../../components/DropDown";
-import { place, placeOne } from "../../common/api/place";
+import { place, placeOne, placeDelete } from "../../common/api/place";
 import Modal from "../../components/Modal";
 
 export interface Place {
@@ -39,6 +39,14 @@ function MainPage() {
     const { data, code } = res;
     //console.log(res.data)
     setPlaceData(data.content);
+    const updatedData: Place[] = data.content.map((place: Place) => {
+      const isChecked = checkedList.includes(place.mungpleId.toString());
+      return {
+        ...place,
+        isChecked,
+      };
+    });
+    setPlaceData(updatedData);
     const buttons = [];
     for (let i = 0; i <= data.totalPages - 1; i++) {
       buttons.push(i);
@@ -79,17 +87,32 @@ function MainPage() {
     setSearch(event.target.value);
   };
   const deleteButtonHandler = () => {
-    console.log("delete");
-    setModalAlert("선택한 멍플을 삭제하시겠습니까?");
-    setShowModal(true);
+    if (checkedList.length != 0) {
+      setModalAlert("선택한 멍플을 삭제하시겠습니까?");
+      setShowModal(true);
+    }
   };
 
-  const saveButtonHandler = () => {};
+  // const saveButtonHandler = () => {};
 
   const closeModal = () => {
     setShowModal(false);
   };
 
+  const YesClickHandler = async () => {
+    setShowModal(false);
+    if (checkedList.length === 0) {
+      console.log("없음");
+    } else {
+      console.log(checkedList);
+      for (const mungpleId of checkedList) {
+        const response = await placeDelete(mungpleId);
+        setCheckedList([]);
+        console.log("데이터 삭제 완료:", response);
+      }
+      fetchData();
+    }
+  };
   const onCheckedItem = useCallback(
     (checked: boolean, item: string) => {
       if (checked) {
@@ -109,10 +132,15 @@ function MainPage() {
     fetchData();
     setCurrentPage(0);
   };
+  const detailButtonHandler = () => {
+    console.log("click");
+  };
 
   return (
     <div className="place">
-      {showModal && <Modal alert={modalAlert} no={closeModal} />}
+      {showModal && (
+        <Modal alert={modalAlert} onYes={YesClickHandler} no={closeModal} />
+      )}
       <Header />
       <div className="placeTitle-Wrapper">
         <div className="placeTitle">멍플관리</div>
@@ -125,9 +153,9 @@ function MainPage() {
           onKeyDown={enterKeyDown}
           onChange={inputChange}
         />
-        <button className="place-admin-item save" onClick={saveButtonHandler}>
+        {/* <button className="place-admin-item save" onClick={saveButtonHandler}>
           변경 저장
-        </button>
+        </button> */}
         <button
           className="place-admin-item delete"
           onClick={deleteButtonHandler}
@@ -183,7 +211,12 @@ function MainPage() {
                   <p>없음</p>
                 )}
               </div>
-              <div className="place-info-item detail">수정</div>
+              <div
+                className="place-info-item detail"
+                onClick={detailButtonHandler}
+              >
+                수정
+              </div>
             </div>
           ))}
         </div>
