@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Header.scss";
 import headerlogo from "../common/icons/titleLogo.svg";
-import headerfootprint from "../common/icons/footprint.svg";
+import person from "../common/icons/person.svg";
 function Header() {
   let tab = (useLocation().state as any) || "main";
   const [selected, setSeleceted] = useState({
@@ -44,6 +44,7 @@ function Header() {
           <div className="userbutton" id="user" onClick={clickHandler}>
             유저
           </div>
+          <img src={person} alt="logo" id="person" />
         </div>
       </div>
     </div>

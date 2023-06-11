@@ -88,7 +88,7 @@ function MainPage() {
   };
   const deleteButtonHandler = () => {
     if (checkedList.length != 0) {
-      setModalAlert("선택한 멍플을 삭제하시겠습니까?");
+      setModalAlert("삭제시 되돌릴 수 없습니다.\n정말로 삭제하시겠습니까?");
       setShowModal(true);
     }
   };

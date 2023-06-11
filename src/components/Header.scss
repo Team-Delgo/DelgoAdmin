@@ -24,7 +24,7 @@
 }
 .userbutton {
   z-index: 10;
-  margin-right: 287px;
+  margin-right: 88px;
   margin-left: 88px;
 }
 .postbutton {
@@ -35,10 +35,9 @@
   margin-top: 58px;
   margin-left: 121px;
 }
-#headerfootprint {
-  position: absolute;
-  z-index: 6;
-  filter: invert(87%);
-  margin-top: -10px;
-  margin-left: -10px;
+#person {
+  width: 28.5px;
+  height: 28.5px;
+  margin-right: 121.5px;
+  top: calc(50% - 28.5px / 2 - 1px);
 }
