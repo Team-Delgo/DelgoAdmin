@@ -3,6 +3,7 @@ import Header from "../../components/Header";
 import leftArrow from "../../common/icons/leftArrow.svg";
 import rightArrow from "../../common/icons/rightArrow.svg";
 import downArrow from "../../common/icons/downArrow.svg";
+import close from "../../common/icons/close.svg";
 import "./Main.scss";
 import DropDown from "../../components/DropDown";
 import { place, placeOne, placeDelete } from "../../common/api/place";
@@ -26,7 +27,7 @@ function MainPage() {
   const [modalAlert, setModalAlert] = useState("");
   const [checkedList, setCheckedList] = useState<Array<string>>([]);
   const [category, setCategory] = useState<string>("CA0000");
-
+  const [selectedImage, setSelectedImage] = useState([]);
   const startPage = Math.floor(currentPage / 10) * 10; // 현재 페이지가 속한 그룹의 시작 페이지
   const endPage = Math.min(startPage + 9, pageButtons.length - 1);
 
@@ -135,6 +136,7 @@ function MainPage() {
   const detailButtonHandler = () => {
     console.log("click");
   };
+  const photoUploadHandler = () => {};
 
   return (
     <div className="place">
@@ -206,9 +208,20 @@ function MainPage() {
               </div>
               <div className="place-info-item profilePhoto">
                 {place.photoUrl ? (
-                  <img src={place.photoUrl} alt="프로필 사진" id="profile" />
+                  <div className="photoBox\">
+                    <img src={place.photoUrl} alt="프로필 사진" id="profile" />
+                    <img src={close} id="close" />
+                  </div>
                 ) : (
-                  <p>없음</p>
+                  <div className="fileBox">
+                    <label htmlFor="file">업로드</label>
+                    <input
+                      type="file"
+                      id="file"
+                      onChange={photoUploadHandler}
+                      accept=".png, .jpg/*"
+                    />
+                  </div>
                 )}
               </div>
               <div

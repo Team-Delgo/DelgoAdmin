@@ -9,8 +9,7 @@ const dropDownList = [
   { code: "CA0000", name: "전체" },
   { code: "CA0002", name: "카페" },
   { code: "CA0003", name: "식당" },
-  { code: "CA0004", name: "목욕" },
-  { code: "CA0005", name: "미용" },
+  { code: "CA0005", name: "미용/목욕" },
   { code: "CA0006", name: "병원" },
   { code: "CA0007", name: "유치원/호텔" },
 ];

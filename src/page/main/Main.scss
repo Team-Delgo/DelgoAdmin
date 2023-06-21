@@ -142,6 +142,11 @@
   width: 102px;
   height: 102px;
 }
+#close {
+  position: absolute;
+  padding-left: 32.65px;
+  padding-top: 10px;
+}
 .arrow-left {
   width: 40px;
   height: 40px;
@@ -179,4 +184,12 @@
 .dropdown-wrapper {
   position: absolute;
   top: 346px;
+}
+.fileBox input[type="file"] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
 }

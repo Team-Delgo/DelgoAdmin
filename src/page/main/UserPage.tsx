@@ -102,7 +102,8 @@ function UserPage() {
   };
 
   const totalButtonHandler = () => {
-    setIsDisabled(false);
+    if (isDisabled === true) setIsDisabled(false);
+    else setIsDisabled(true);
   };
 
   const deleteButtonHandler = () => {
