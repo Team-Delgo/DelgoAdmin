@@ -135,7 +135,7 @@ function UserPage() {
         setCheckedList([]);
         console.log("데이터 삭제 완료:", response);
       }
-      fetchData();
+      // fetchData();
     }
     setIsDisabled(true);
   };
@@ -222,7 +222,7 @@ function UserPage() {
           {userData?.map((user: User, index: number) => (
             <div className="user-info" key={user.userId}>
               <input
-                className="user-checkbox"
+                className={`user-checkbox${isDisabled ? "-isDisabled" : ""}`}
                 id={String(user.userId)}
                 type="checkbox"
                 disabled={isDisabled}

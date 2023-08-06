@@ -7,6 +7,7 @@ interface Props {
 
 const dropDownList = [
   { code: "CA0000", name: "전체" },
+  { code: "CA0001", name: "산책" },
   { code: "CA0002", name: "카페" },
   { code: "CA0003", name: "식당" },
   { code: "CA0005", name: "미용/목욕" },

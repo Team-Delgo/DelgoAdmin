@@ -19,7 +19,6 @@ async function postOne(userId: number) {
       //size:한페이지에 불러올 데이터 개수, page:현재 페이지
     );
     return res.data;
-    console.log(res.data);
   } catch (error: any) {
     console.error(error);
   }

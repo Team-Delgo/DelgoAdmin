@@ -6,7 +6,12 @@ import downArrow from "../../common/icons/downArrow.svg";
 import close from "../../common/icons/close.svg";
 import "./Main.scss";
 import DropDown from "../../components/DropDown";
-import { place, placeOne, placeDelete } from "../../common/api/place";
+import {
+  place,
+  placeOne,
+  placeDelete,
+  placePhoto,
+} from "../../common/api/place";
 import Modal from "../../components/Modal";
 
 export interface Place {
@@ -30,6 +35,7 @@ function MainPage() {
   const [selectedImage, setSelectedImage] = useState([]);
   const startPage = Math.floor(currentPage / 10) * 10; // 현재 페이지가 속한 그룹의 시작 페이지
   const endPage = Math.min(startPage + 9, pageButtons.length - 1);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -38,7 +44,7 @@ function MainPage() {
   const fetchData = async () => {
     const res = await place(currentPage, category);
     const { data, code } = res;
-    //console.log(res.data)
+    //console.log(res.data);
     setPlaceData(data.content);
     const updatedData: Place[] = data.content.map((place: Place) => {
       const isChecked = checkedList.includes(place.mungpleId.toString());
@@ -57,11 +63,12 @@ function MainPage() {
 
   const searchData = async () => {
     if (search != "") {
-      const res = await placeOne(search);
+      const res = await placeOne(search, currentPage);
+      console.log(search);
       const { data, code } = res;
 
       if (data) {
-        setPlaceData([data]);
+        setPlaceData(data.content);
         console.log(data);
         const buttons = [];
         for (let i = 0; i <= data.totalPages - 1; i++) {
@@ -94,8 +101,10 @@ function MainPage() {
     }
   };
 
-  // const saveButtonHandler = () => {};
-
+  const totalButtonHandler = () => {
+    if (isDisabled === true) setIsDisabled(false);
+    else setIsDisabled(true);
+  };
   const closeModal = () => {
     setShowModal(false);
   };
@@ -136,8 +145,21 @@ function MainPage() {
   const detailButtonHandler = () => {
     console.log("click");
   };
-  const photoUploadHandler = () => {};
+  const photoUploadHandler = (mungpleId: string) => {
+    const fileInput = document.getElementById("file") as HTMLInputElement;
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append("photo", file);
 
+      placePhoto(mungpleId, formData);
+      console.log("Thumbnail upload success");
+      // 썸네일 업로드 성공 처리
+    } else {
+      console.log("No file selected");
+      // 파일 선택되지 않은 경우 처리
+    }
+  };
   return (
     <div className="place">
       {showModal && (
@@ -158,9 +180,13 @@ function MainPage() {
         {/* <button className="place-admin-item save" onClick={saveButtonHandler}>
           변경 저장
         </button> */}
+        <button className="user-admin-item fix" onClick={totalButtonHandler}>
+          정보수정
+        </button>
         <button
           className="place-admin-item delete"
           onClick={deleteButtonHandler}
+          disabled={isDisabled}
         >
           선택삭제
         </button>
@@ -183,19 +209,20 @@ function MainPage() {
         <label className="place-label-item name">업체이름</label>
         <label className="place-label-item address">주소</label>
         <label className="place-label-item photo">업체사진 썸네일</label>
-        <label className="place-label-item detail">상세수정</label>
+        <label className="place-label-item detail">활성화</label>
       </div>
       <div className="place-info">
         <div className="place-info-wrapper">
           {placeData?.map((place: Place, index: number) => (
             <div className="place-info" key={place.mungpleId}>
               <input
-                className="place-checkbox"
+                className={`place-checkbox${isDisabled ? "-isDisabled" : ""}`}
                 id={String(place.mungpleId)}
                 type="checkbox"
                 onChange={(e) => {
                   onCheckedItem(e.target.checked, e.target.id);
                 }}
+                disabled={isDisabled}
               />
               <label htmlFor={String(place.mungpleId)}></label>
               <div className="place-info-item number">{index + 1}</div>
@@ -218,7 +245,9 @@ function MainPage() {
                     <input
                       type="file"
                       id="file"
-                      onChange={photoUploadHandler}
+                      onChange={(event) =>
+                        photoUploadHandler(String(place.mungpleId))
+                      }
                       accept=".png, .jpg/*"
                     />
                   </div>
